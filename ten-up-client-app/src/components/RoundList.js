@@ -4,7 +4,7 @@ import { useQuery, gql } from '@apollo/client';
 
 const ROUNDS_QUERY = gql`
   {
-    randomRound {
+    allRounds {
       id
       player
       bid
@@ -22,7 +22,7 @@ const RoundList = (props) => {
     <div class="rounds-container">
       { data && (
         <>
-        { [data.randomRound].map((round) => (
+        { data.allRounds.map((round) => (
           <Round key={round.id} round={round} />
         ))}
         </>
