@@ -23,9 +23,3 @@ root.render(
     <App />
   </ApolloProvider>,
 );
-
-client.query({
-  query: gql`
-    query { latestPost }
-  `,
-}).then((result) => console.log(result))
