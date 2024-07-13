@@ -8,6 +8,7 @@ import (
 
 var playerRoundType *graphql.Object
 var queryType *graphql.Object
+var mutationType *graphql.Object
 var Schema graphql.Schema
 
 func init() {
@@ -16,6 +17,7 @@ func init() {
     Fields: graphql.Fields{
       "id": &graphql.Field{ Type: graphql.Int },
       "player": &graphql.Field{ Type: graphql.String }, // should be !
+      "round": &graphql.Field{ Type: graphql.String }, // should be !
       "bid": &graphql.Field{ Type: graphql.Int },
       "score": &graphql.Field{ Type: graphql.Int },
     },
@@ -41,7 +43,27 @@ func init() {
     },
   })
 
+  mutationType = graphql.NewObject(graphql.ObjectConfig{
+    Name: "Mutation",
+    Fields: graphql.Fields{
+      "createRound": &graphql.Field{
+        //Type: playerRoundType,
+        Type: graphql.NewList(playerRoundType),
+        Description: "Create a new player-round (or, TODO, set of them)",
+        Args: graphql.FieldConfigArgument{
+          "round": &graphql.ArgumentConfig{
+            Type: graphql.String,
+          },
+        },
+        Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+          return AddRound(params.Args["round"].(string)), nil
+        },
+      },
+    },
+  })
+
   Schema, _ = graphql.NewSchema(graphql.SchemaConfig{
     Query: queryType,
+    Mutation: mutationType,
   })
 }

@@ -7,6 +7,7 @@ const ROUNDS_QUERY = gql`
     allRounds {
       id
       player
+      round
       bid
       score
     }
@@ -19,7 +20,7 @@ const RoundList = (props) => {
   // right now just wrapping return of a random round in an array, replace with list of rounds next
 
   return (
-    <div class="rounds-container">
+    <div className="rounds-container">
       { data && (
         <>
         { data.allRounds.map((round) => (

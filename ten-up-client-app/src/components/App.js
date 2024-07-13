@@ -1,10 +1,14 @@
 import './../styles/App.css';
 
 import RoundList from './RoundList'
+import CreateRound from './CreateRound'
 
 function App() {
   return (
-    <RoundList />
+    <>
+      <RoundList />
+      <CreateRound />
+    </>
   );
 }
 

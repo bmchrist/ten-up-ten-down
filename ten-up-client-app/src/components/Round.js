@@ -5,6 +5,7 @@ const Round = (props) => {
   return (
     <div>
       <span>{round.player},</span>
+      <span>{round.round},</span>
       <span>{round.bid},</span>
       <span>{round.score}</span>
     </div>
