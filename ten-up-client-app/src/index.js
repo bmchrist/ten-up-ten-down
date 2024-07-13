@@ -6,9 +6,7 @@ import App from './components/App';
 import {
   ApolloProvider,
   ApolloClient,
-  //createHttpLink,
   InMemoryCache,
-  gql
 } from '@apollo/client';
 
 // This points to our gql sercer
