@@ -3,24 +3,36 @@ package main
 import (
   "errors"
   "fmt"
-  "io"
   "net/http"
   "os"
+  "github.com/graphql-go/graphql"
+  "github.com/graphql-go/handler"
  )
 
-func getRoot(w http.ResponseWriter, r *http.Request) {
-  fmt.Printf("got / request\n")
-  io.WriteString(w, "This is my website!\n")
-}
+var queryType = graphql.NewObject(graphql.ObjectConfig{
+  Name: "Query",
+  Fields: graphql.Fields{
+    "latestPost": &graphql.Field{
+      Type: graphql.String,
+      Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+        return "Hello world", nil
+      },
+    },
+  },
+})
 
-func getSecondPage(w http.ResponseWriter, r *http.Request) {
-  fmt.Printf("got / other page request\n")
-  io.WriteString(w, "This is my other page of my website!\n")
-}
+var Schema, _ = graphql.NewSchema(graphql.SchemaConfig{
+  Query: queryType,
+})
 
 func main() {
-  http.HandleFunc("/", getRoot)
-  http.HandleFunc("/hello", getSecondPage)
+
+  h := handler.New(&handler.Config{
+    Schema: &Schema,
+    Pretty: true,
+  })
+
+  http.Handle("/graphql", h)
 
   err := http.ListenAndServe(":3333", nil)
 
