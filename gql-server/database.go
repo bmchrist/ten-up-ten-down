@@ -1,4 +1,6 @@
 package main
+
+import ("math/rand/v2")
 // put this into its own package later
 
 type PlayerRound struct {
@@ -8,25 +10,26 @@ type PlayerRound struct {
   Score   string  `json:"text"`
 }
 
-// Mock data
-var round1 = &PlayerRound{
-  Id: "1",
-  Player: "Ben",
-  Bid: "2",
-  Score: "1",
-}
-var round2 = &PlayerRound{
-  Id: "2",
-  Player: "Scott",
-  Bid: "5",
-  Score: "0",
+var rounds = []PlayerRound{
+  PlayerRound{
+    Id: "1",
+    Player: "Ben",
+    Bid: "2",
+    Score: "1",
+  },
+  PlayerRound{
+    Id: "2",
+    Player: "Scott",
+    Bid: "5",
+    Score: "0",
+  },
 }
 
 func GetAllRounds() []PlayerRound {
-  return []PlayerRound{*round1, *round2}
+  return rounds;
 }
 
 // Temporary, for mocking out
-func GetRandomRound() *PlayerRound {
-  return round1
+func GetRandomRound() PlayerRound {
+  return rounds[rand.IntN(len(rounds))];
 }
