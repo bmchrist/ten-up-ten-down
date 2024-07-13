@@ -34,3 +34,22 @@ TODO
 Ideas
 - Button to hit when player takes a trick
 -
+
+
+
+Frontend should
+Mutations:
+- Create Game
+- Add players
+- Add round (uses current player list, sets dealer based on prev round, take # of cards for round)
+- Add Score for given player+round
+- Add Bid for given player+round
+
+Fetching
+- Get all rounds and round info and display, one query
+- - at first have this just automatically get subqueries using gql, but look into how we don't n+
+- Know who the dealer is for a given round
+
+
+TBD
+- Frontend or backend track total score
