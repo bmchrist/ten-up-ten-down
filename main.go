@@ -37,6 +37,7 @@ func main() {
   graphqlHandler := handler.New(&handler.Config{
     Schema: &Schema,
     Pretty: true,
+    Playground: true,
   })
 
   http.HandleFunc("/", getRoot)
