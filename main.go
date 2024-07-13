@@ -4,11 +4,13 @@ import (
   "errors"
   "fmt"
   "net/http"
+  "io" // used for my temporary root page, remove later
   "os"
   "github.com/graphql-go/graphql"
   "github.com/graphql-go/handler"
- )
+)
 
+// Stub Schema until I build the proper one
 var queryType = graphql.NewObject(graphql.ObjectConfig{
   Name: "Query",
   Fields: graphql.Fields{
@@ -25,14 +27,20 @@ var Schema, _ = graphql.NewSchema(graphql.SchemaConfig{
   Query: queryType,
 })
 
-func main() {
+// This is where we'll serve the main application from, for now it's a stub
+func getRoot(w http.ResponseWriter, r *http.Request) {
+  // TODO have this serve up a little html/JS snippet to make playing around
+  io.WriteString(w, "This is my website!\n")
+}
 
-  h := handler.New(&handler.Config{
+func main() {
+  graphqlHandler := handler.New(&handler.Config{
     Schema: &Schema,
     Pretty: true,
   })
 
-  http.Handle("/graphql", h)
+  http.HandleFunc("/", getRoot)
+  http.Handle("/graphql", graphqlHandler)
 
   err := http.ListenAndServe(":3333", nil)
 
