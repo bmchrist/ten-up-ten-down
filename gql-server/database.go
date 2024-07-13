@@ -9,14 +9,24 @@ type PlayerRound struct {
 }
 
 // Mock data
-var testRound = &PlayerRound{
+var round1 = &PlayerRound{
   Id: "1",
   Player: "Ben",
   Bid: "2",
   Score: "1",
 }
+var round2 = &PlayerRound{
+  Id: "2",
+  Player: "Scott",
+  Bid: "5",
+  Score: "0",
+}
+
+func GetAllRounds() []PlayerRound {
+  return []PlayerRound{*round1, *round2}
+}
 
 // Temporary, for mocking out
-func RandomRound() *PlayerRound {
-  return testRound
+func GetRandomRound() *PlayerRound {
+  return round1
 }

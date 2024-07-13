@@ -25,10 +25,17 @@ func init() {
   queryType = graphql.NewObject(graphql.ObjectConfig{
     Name: "Query",
     Fields: graphql.Fields{
+      "allRounds": &graphql.Field{
+        Type: graphql.NewList(playerRoundType),
+        Description: "Gets all rounds", // TODO: later make this for a given Game
+        Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+          return GetAllRounds(), nil
+        },
+      },
       "randomRound": &graphql.Field{
         Type: playerRoundType,
         Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-          return RandomRound(), nil
+          return GetRandomRound(), nil
         },
       },
     },

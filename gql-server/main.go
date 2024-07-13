@@ -4,25 +4,17 @@ import (
   "errors"
   "fmt"
   "net/http"
-  "io" // used for my temporary root page, remove later
   "os"
   "github.com/graphql-go/handler"
 )
 
-// This is where we'll serve the main application from, for now it's a stub
-func getRoot(w http.ResponseWriter, r *http.Request) {
-  // TODO have this serve up a little html/JS snippet to make playing around
-  io.WriteString(w, "This is my website!\n")
-}
-
 func main() {
   graphqlHandler := handler.New(&handler.Config{
-    Schema: &Schema,
+    Schema: &Schema, // comes from schema.go
     Pretty: true,
     Playground: true,
   })
 
-  http.HandleFunc("/", getRoot)
   http.Handle("/graphql", graphqlHandler)
 
   fmt.Printf("starting server\n")
