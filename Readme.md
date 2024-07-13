@@ -1,5 +1,6 @@
-Run GraphQL server: go run main.go
-Run frontend - yarn start in client-app subdir
+Run GraphQL server: `go run .` in gql-server
+
+Run frontend - `yarn start` in ten-up-client-app subdir
 
 A game has players and rounds
 In a round each player has a bid and a score
