@@ -11,14 +11,9 @@ const CREATE_ROUND_MUTATION = gql`
 `
 // on success do something
 const CreateRound = () => {
-  const [formState, setFormState] = useState({
-    numCards: ''
-  });
+  let input;
 
   const [createRound] = useMutation(CREATE_ROUND_MUTATION, {
-    variables: {
-      numCards: formState.numCards,
-    },
     // TODO understand this better and the various options
     update(cache, { data: {createRound}}) {
       cache.modify({
@@ -41,28 +36,18 @@ const CreateRound = () => {
 
   // TODO simplify this form - feels like overkill
   return (
-    <div>
-      <form onSubmit={(e) =>{
-        e.preventDefault();
-        createRound();
+    <>
+      <form onSubmit={e =>{
+          e.preventDefault();
+          createRound({ variables: { numCards: input.value }});
+          input.value = '';
       }}>
-        <div className="flex flex-column mt3">
-          <input
-            className="mb2"
-            value={formState.numCards}
-            onChange={(e) =>
-              setFormState({
-                ...formState,
-                numCards: e.target.value
-              })
-            }
-          type="text"
-          placeholder="Number of cards for next round"
-          />
-        </div>
-        <button type="submit">Submit</button>
+        <input ref={node => {
+          input = node
+        }}/>
+        <button type="submit">Add round</button>
       </form>
-    </div>
+    </>
   );
 };
 
