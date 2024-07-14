@@ -7,6 +7,7 @@ const ROUNDS_QUERY = gql`
     allRounds {
       id
       sequence
+      numCards
       playerRounds {
         id
         player

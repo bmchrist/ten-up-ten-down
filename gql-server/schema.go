@@ -45,9 +45,9 @@ func init() {
   queryType = graphql.NewObject(graphql.ObjectConfig{
     Name: "Query",
     Fields: graphql.Fields{
-      "allPlayerRounds": &graphql.Field{ // deprecate or rename playerRounds TODO
+      "allPlayerRounds": &graphql.Field{ // deprecate?
         Type: graphql.NewList(playerRoundType),
-        Description: "Gets all rounds", // TODO: later make this for a given Game
+        Description: "Gets all rounds",
         Resolve: func(p graphql.ResolveParams) (interface{}, error) {
           return GetAllPlayerRounds(), nil
         },
@@ -66,8 +66,7 @@ func init() {
     Name: "Mutation",
     Fields: graphql.Fields{
       "createRound": &graphql.Field{
-        //Type: playerRoundType,
-        Type: graphql.NewList(playerRoundType),
+        Type: roundType,
         Description: "Create a new player-round (or, TODO, set of them)",
         Args: graphql.FieldConfigArgument{
           "numCards": &graphql.ArgumentConfig{

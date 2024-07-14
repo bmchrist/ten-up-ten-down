@@ -66,16 +66,18 @@ func GetAllRounds() []Round {
 }
 
 // Mutations
-func AddRound(numCards int) []PlayerRound {
+func AddRound(numCards int) Round {
   // TODO: validate that round doesn't exist
   // TODO: track list of plauers
   currentRoundId = currentRoundId + 1;
 
-  rounds = append(rounds, Round{
+  var newRound = Round{
     Id: currentRoundId,
     Sequence: currentRoundId,
     NumCards: numCards,
-  })
+  }
+
+  rounds = append(rounds, newRound)
 
   // TODO for player in player list
   playerRounds = append(playerRounds, PlayerRound{
@@ -84,6 +86,5 @@ func AddRound(numCards int) []PlayerRound {
     Player: "Scott",
   })
 
-  // should it return just the rounds that were added? or all-all
-  return playerRounds
+  return newRound
 }
