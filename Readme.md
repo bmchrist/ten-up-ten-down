@@ -53,3 +53,7 @@ Fetching
 
 TBD
 - Frontend or backend track total score
+
+
+Add tests for the go server functions
+and then switch to a new data structure

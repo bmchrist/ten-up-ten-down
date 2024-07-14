@@ -77,6 +77,28 @@ func init() {
           return AddRound(params.Args["numCards"].(int)), nil
         },
       },
+      "updateBid": &graphql.Field{
+        Type: playerRoundType,
+        Description: "Sets the bid for a given player",
+        Args: graphql.FieldConfigArgument{
+          "roundId": &graphql.ArgumentConfig{
+            Type: graphql.Int,
+          },
+          "player": &graphql.ArgumentConfig{
+            Type: graphql.String,
+          },
+          "bid": &graphql.ArgumentConfig{
+            Type: graphql.Int,
+          },
+        },
+        Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+          return UpdateBid(
+            params.Args["roundId"].(int),
+            params.Args["player"].(string),
+            params.Args["bid"].(int),
+          ), nil
+        },
+      },
     },
   })
 

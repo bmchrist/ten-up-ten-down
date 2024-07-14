@@ -113,3 +113,15 @@ func AddRound(numCards int) Round {
 
   return newRound
 }
+
+// How should I return a falied status? For now just returns a null PlayerRound
+func UpdateBid(roundId int, player string, bid int) PlayerRound {
+  var updatedPlayerRound PlayerRound
+  for i:=0; i < len(playerRounds); i++ { // add or playerRound not null to exit if found already
+    if playerRounds[i].Round == roundId && playerRounds[i].Player == player {
+      playerRounds[i].Bid = bid
+      updatedPlayerRound = playerRounds[i]
+    }
+  }
+  return updatedPlayerRound
+}
