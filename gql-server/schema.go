@@ -1,12 +1,11 @@
 package main // tutorial has this as data which I think is a mistake
 
-// TODO understand more about order that multiple files get used, pros and cons of importing in diff places, etc
-
 import (
   "github.com/graphql-go/graphql"
 )
 
 var playerRoundType *graphql.Object
+var roundType *graphql.Object
 var queryType *graphql.Object
 var mutationType *graphql.Object
 var Schema graphql.Schema
@@ -17,9 +16,28 @@ func init() {
     Fields: graphql.Fields{
       "id": &graphql.Field{ Type: graphql.Int },
       "player": &graphql.Field{ Type: graphql.String }, // should be !
-      "round": &graphql.Field{ Type: graphql.String }, // should be !
+      "round": &graphql.Field{ Type: graphql.Int }, // should be !
       "bid": &graphql.Field{ Type: graphql.Int },
-      "score": &graphql.Field{ Type: graphql.Int },
+      "tricks": &graphql.Field{ Type: graphql.Int },
+    },
+  })
+
+  roundType = graphql.NewObject(graphql.ObjectConfig{
+    Name: "Round",
+    Fields: graphql.Fields{
+      "id": &graphql.Field{ Type: graphql.Int },
+      "sequence": &graphql.Field{ Type: graphql.Int },
+      "numCards": &graphql.Field{ Type: graphql.Int },
+      "playerRounds": &graphql.Field{
+        Type: graphql.NewList(playerRoundType),
+        Description: "All of the individual player's tricks taken and bids",
+        Resolve: func(p graphql.ResolveParams) (interface{}, error){
+          if round, ok := p.Source.(Round); ok { // TODO what is the point of this
+            return GetPlayerRounds(round.Id), nil
+          }
+          return []interface{}{}, nil
+        },
+      },
     },
   })
 
@@ -27,17 +45,18 @@ func init() {
   queryType = graphql.NewObject(graphql.ObjectConfig{
     Name: "Query",
     Fields: graphql.Fields{
-      "allRounds": &graphql.Field{
+      "allPlayerRounds": &graphql.Field{ // deprecate or rename playerRounds TODO
         Type: graphql.NewList(playerRoundType),
         Description: "Gets all rounds", // TODO: later make this for a given Game
         Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-          return GetAllRounds(), nil
+          return GetAllPlayerRounds(), nil
         },
       },
-      "randomRound": &graphql.Field{
-        Type: playerRoundType,
+      "allRounds": &graphql.Field{
+        Type: graphql.NewList(roundType),
+        Description: "Gets all rounds", // TODO: later make this for a given Game
         Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-          return GetRandomRound(), nil
+          return GetAllRounds(), nil
         },
       },
     },
@@ -51,12 +70,12 @@ func init() {
         Type: graphql.NewList(playerRoundType),
         Description: "Create a new player-round (or, TODO, set of them)",
         Args: graphql.FieldConfigArgument{
-          "round": &graphql.ArgumentConfig{
-            Type: graphql.String,
+          "numCards": &graphql.ArgumentConfig{
+            Type: graphql.Int,
           },
         },
         Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-          return AddRound(params.Args["round"].(string)), nil
+          return AddRound(params.Args["numCards"].(int)), nil
         },
       },
     },

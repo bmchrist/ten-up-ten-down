@@ -6,10 +6,13 @@ const ROUNDS_QUERY = gql`
   {
     allRounds {
       id
-      player
-      round
-      bid
-      score
+      sequence
+      playerRounds {
+        id
+        player
+        bid
+        tricks 
+      }
     }
   }
 `;

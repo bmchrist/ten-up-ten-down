@@ -1,23 +1,22 @@
 package main
 
-import (
-  "math/rand/v2"
+//import (
+  //"math/rand/v2"
   //"fmt"
-)
-// put this into its own package later
+//)
 
 type PlayerRound struct {
   Id      string  `json:"id"` // not really needed
-  Round   int     `json:"text"` // points to round ID
+  Round   int     `json:"integer"` // points to round ID
   Player  string  `json:"text"`
-  Bid     string  `json:"text"` // TODO replace with int
-  Score   string  `json:"text"`
+  Bid     int     `json:"integer"` // TODO replace with int
+  Tricks  int     `json:"integer"`
 }
 
 type Round struct {
   Id        int     `json:"id"` // not really needed - for now will just mirror the seqence number
-  Sequence  int     `json:"text"`
-  NumCards  string  `json:"text"` // eg 1, 10, etc
+  Sequence  int     `json:"integer"`
+  NumCards  int     `json:"integer"` // eg 1, 10, etc
   Dealer    string  `json:"text"` // Player name/id
 }
 
@@ -25,58 +24,63 @@ var rounds = []Round{
   Round{
     Id: 1,
     Sequence: 1,
-    NumCards: "10",
+    NumCards: 10,
   },
 }
+
+var currentRoundId int = 1;
 
 var playerRounds = []PlayerRound{
   PlayerRound{
     Id: "1",
     Round: 1,
     Player: "Ben",
-    Bid: "2",
-    Score: "1",
+    Bid: 2,
+    Tricks: 1,
   },
   PlayerRound{
     Id: "2",
     Round: 1,
     Player: "Scott",
-    Bid: "5",
-    Score: "0",
+    Bid: 5,
+    Tricks: 0,
   },
 }
 
-// TODO should this return Rounds that get filled with data, or the playerrounds?
-func GetAllRounds() []PlayerRound {
+func GetAllPlayerRounds() []PlayerRound {
   return playerRounds;
 }
 
-// Temporary, for mocking out
-func GetRandomRound() PlayerRound {
-  // todo have it grab an entire round
-  return playerRounds[rand.IntN(len(playerRounds))];
+func GetPlayerRounds(round_id int) []PlayerRound {
+  var selectedRounds = []PlayerRound{}
+  for i:=0; i < len(playerRounds); i++ {
+    if playerRounds[i].Round == round_id {
+      selectedRounds = append(selectedRounds, playerRounds[i])
+    }
+  }
+  return selectedRounds;
 }
 
-// gets the next round ID/sequence based on the highest sequence already present
-func getNextRoundId() int {
-  return 1 // TODO
+func GetAllRounds() []Round {
+  return rounds;
 }
 
-func AddRound(round string) []PlayerRound {
+// Mutations
+func AddRound(numCards int) []PlayerRound {
   // TODO: validate that round doesn't exist
   // TODO: track list of plauers
-  var nextRoundId = getNextRoundId();
+  currentRoundId = currentRoundId + 1;
 
   rounds = append(rounds, Round{
-    Id: nextRoundId,
-    Sequence: nextRoundId,
-    NumCards: "0", // TODO from params
+    Id: currentRoundId,
+    Sequence: currentRoundId,
+    NumCards: numCards,
   })
 
   // TODO for player in player list
   playerRounds = append(playerRounds, PlayerRound{
-    Id: "1",
-    Round: nextRoundId,
+    //Id: "1",
+    Round: currentRoundId,
     Player: "Scott",
   })
 

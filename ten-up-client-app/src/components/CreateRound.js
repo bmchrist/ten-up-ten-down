@@ -2,28 +2,22 @@ import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 
 const CREATE_ROUND_MUTATION = gql`
-  mutation PostMutation(
-    $round: String!
-  ) {
-    post(round: $round) {
-      id
+  mutation createRound($numCards: Int!) {
+    createRound(numCards: $numCards){
       round
+      player
     }
   }
 `
-// todo think about what this should actually do - create all the relevant playerrounds, create just one, etc?
-//
-
-
-
+// on success do something
 const CreateRound = () => {
   const [formState, setFormState] = useState({
-    round: ''
+    numCards: ''
   });
 
   const [createRound] = useMutation(CREATE_ROUND_MUTATION, {
     variables: {
-      round: formState.round,
+      numCards: formState.numCards,
     }
   });
 
@@ -36,15 +30,15 @@ const CreateRound = () => {
         <div className="flex flex-column mt3">
           <input
             className="mb2"
-            value={formState.round}
+            value={formState.numCards}
             onChange={(e) =>
               setFormState({
                 ...formState,
-                round: e.target.value
+                numCards: e.target.value
               })
             }
           type="text"
-          placeholder="Round"
+          placeholder="Number of cards for next round"
           />
         </div>
         <button type="submit">Submit</button>

@@ -1,13 +1,15 @@
 import React from 'react';
+import PlayerRound from './PlayerRound';
 
 const Round = (props) => {
   const { round } = props;
   return (
     <div>
-      <span>{round.player},</span>
-      <span>{round.round},</span>
-      <span>{round.bid},</span>
-      <span>{round.score}</span>
+    <span>Round { round.sequence }</span>
+    { round.playerRounds.map( playerRound =>
+      <PlayerRound key={playerRound.id} playerRound={playerRound} />
+    )}
+    <br/>
     </div>
   );
 };
