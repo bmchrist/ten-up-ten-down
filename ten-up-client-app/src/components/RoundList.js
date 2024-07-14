@@ -24,15 +24,23 @@ const RoundList = (props) => {
   // right now just wrapping return of a random round in an array, replace with list of rounds next
 
   return (
-    <div className="rounds-container">
-      { data && (
-        <>
-        { data.allRounds.map((round) => (
-          <Round key={round.id} round={round} />
-        ))}
-        </>
-      )}
-    </div>
+    <table className="rounds-container">
+      <thead>
+        <tr>
+          <td>Round</td>
+          <td>TODO Show names here</td>
+        </tr>
+      </thead>
+      <tbody>
+        { data && (
+          <>
+          { data.allRounds.map((round) => (
+            <Round key={round.id} round={round} />
+          ))}
+          </>
+        )}
+      </tbody>
+    </table>
   );
 };
 

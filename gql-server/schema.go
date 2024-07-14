@@ -41,17 +41,16 @@ func init() {
     },
   })
 
-  // Stub Query structure until I build the proper one
   queryType = graphql.NewObject(graphql.ObjectConfig{
     Name: "Query",
     Fields: graphql.Fields{
-      "allPlayerRounds": &graphql.Field{ // deprecate?
-        Type: graphql.NewList(playerRoundType),
-        Description: "Gets all rounds",
-        Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-          return GetAllPlayerRounds(), nil
-        },
-      },
+      //"allPlayerRounds": &graphql.Field{ // deprecate?
+        //Type: graphql.NewList(playerRoundType),
+        //Description: "Gets all rounds",
+        //Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+          //return GetAllPlayerRounds(), nil
+        //},
+      //},
       "allRounds": &graphql.Field{
         Type: graphql.NewList(roundType),
         Description: "Gets all rounds", // TODO: later make this for a given Game
@@ -62,6 +61,7 @@ func init() {
     },
   })
 
+  // Adds a new round, incrementing the sequence/id, with a provided number of cards
   mutationType = graphql.NewObject(graphql.ObjectConfig{
     Name: "Mutation",
     Fields: graphql.Fields{

@@ -20,37 +20,61 @@ type Round struct {
   Dealer    string  `json:"text"` // Player name/id
 }
 
-var rounds = []Round{
-  Round{
-    Id: 1,
-    Sequence: 1,
-    NumCards: 10,
-  },
+// Consider storing the playerRounds under rounds in a map..
+var rounds = []Round{}
+var playerRounds = []PlayerRound{}
+var currentRoundId int = 0;
+var players = []string{}
+
+func init() {
+  // For testing, add some seed data. Defined in database.go
+  SeedRounds();
 }
 
-var currentRoundId int = 1;
+func SeedRounds() bool {
+  currentRoundId = 1;
 
-var playerRounds = []PlayerRound{
-  PlayerRound{
-    Id: "1",
-    Round: 1,
-    Player: "Ben",
-    Bid: 2,
-    Tricks: 1,
-  },
-  PlayerRound{
-    Id: "2",
-    Round: 1,
-    Player: "Scott",
-    Bid: 5,
-    Tricks: 0,
-  },
+  players = []string{"Ben", "Scott"};
+
+  rounds = append(rounds,
+    Round{
+      Id: 1,
+      Sequence: 1,
+      NumCards: 10,
+    },
+  )
+
+  playerRounds = append(
+    playerRounds,
+    PlayerRound{
+      Id: "1",
+      Round: 1,
+      Player: "Ben",
+      Bid: 2,
+      Tricks: 1,
+    },
+    PlayerRound{
+      Id: "2",
+      Round: 1,
+      Player: "Scott",
+      Bid: 5,
+      Tricks: 0,
+    },
+  )
+
+  return true
 }
 
-func GetAllPlayerRounds() []PlayerRound {
-  return playerRounds;
-}
+// -------
+// Getters
+// -------
 
+// Likely not needed anymore (we get these via the Rounds which uses the GetPlayerRounds call)
+//func GetAllPlayerRounds() []PlayerRound {
+  //return playerRounds;
+//}
+
+// Gets all the player rounds for a given round ID (which is the same as its sequence)
 func GetPlayerRounds(round_id int) []PlayerRound {
   var selectedRounds = []PlayerRound{}
   for i:=0; i < len(playerRounds); i++ {
@@ -65,10 +89,11 @@ func GetAllRounds() []Round {
   return rounds;
 }
 
+// ---------
 // Mutations
+// ---------
 func AddRound(numCards int) Round {
   // TODO: validate that round doesn't exist
-  // TODO: track list of plauers
   currentRoundId = currentRoundId + 1;
 
   var newRound = Round{
@@ -79,12 +104,12 @@ func AddRound(numCards int) Round {
 
   rounds = append(rounds, newRound)
 
-  // TODO for player in player list
-  playerRounds = append(playerRounds, PlayerRound{
-    //Id: "1",
-    Round: currentRoundId,
-    Player: "Scott",
-  })
+  for i:=0; i < len(players); i++ {
+    playerRounds = append(playerRounds, PlayerRound{
+      Round: currentRoundId,
+      Player: players[i],
+    })
+  }
 
   return newRound
 }
