@@ -9,7 +9,7 @@ const CREATE_ROUND_MUTATION = gql`
     }
   }
 `
-// on success do something
+
 const CreateRound = () => {
   let input;
 
@@ -34,7 +34,6 @@ const CreateRound = () => {
     }
   });
 
-  // TODO simplify this form - feels like overkill
   return (
     <>
       <form onSubmit={e =>{

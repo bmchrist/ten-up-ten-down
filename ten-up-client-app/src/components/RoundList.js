@@ -11,6 +11,7 @@ const ROUNDS_QUERY = gql`
       playerRounds {
         id
         player
+        round
         bid
         tricks 
       }
