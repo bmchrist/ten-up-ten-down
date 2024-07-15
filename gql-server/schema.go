@@ -14,7 +14,6 @@ func init() {
   playerRoundType = graphql.NewObject(graphql.ObjectConfig{
     Name: "PlayerRound",
     Fields: graphql.Fields{
-      "id": &graphql.Field{ Type: graphql.Int },
       "player": &graphql.Field{ Type: graphql.String }, // should be !
       "round": &graphql.Field{ Type: graphql.Int }, // should be !
       "bid": &graphql.Field{ Type: graphql.Int },
@@ -26,7 +25,6 @@ func init() {
     Name: "Round",
     Fields: graphql.Fields{
       "id": &graphql.Field{ Type: graphql.Int },
-      "sequence": &graphql.Field{ Type: graphql.Int },
       "numCards": &graphql.Field{ Type: graphql.Int },
       "playerRounds": &graphql.Field{
         Type: graphql.NewList(playerRoundType),

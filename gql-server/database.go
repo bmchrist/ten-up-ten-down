@@ -1,7 +1,6 @@
 package main
 
 type PlayerRound struct {
-  Id      string  `json:"id"` // not really needed
   Round   int     `json:"integer"` // points to round ID
   Player  string  `json:"text"`
   Bid     int     `json:"integer"` // TODO replace with int
@@ -9,8 +8,7 @@ type PlayerRound struct {
 }
 
 type Round struct {
-  Id        int     `json:"id"` // not really needed - for now will just mirror the seqence number
-  Sequence  int     `json:"integer"`
+  Id        int     `json:"id"` // Sequential
   NumCards  int     `json:"integer"` // eg 1, 10, etc
   Dealer    string  `json:"text"` // Player name/id
 }
@@ -21,7 +19,6 @@ var rounds = []Round{}
 // playerRoundsStore[roundId]["player"] = PlayerRound
 var playerRoundsStore = map[int]map[string]PlayerRound{}
 
-var currentRoundId int = 0;
 var players = []string{}
 
 
@@ -46,7 +43,7 @@ func SeedRounds() bool {
 // Getters
 // -------
 
-// Gets all the player rounds for a given round ID (which is the same as its sequence)
+// Gets all the player rounds for a given round ID
 func GetPlayerRounds(round_id int) []PlayerRound {
   var playerRoundsToReturn []PlayerRound
   for _, value := range playerRoundsStore[round_id] {
@@ -70,12 +67,10 @@ func AddPlayer(name string) []string {
 }
 
 func AddRound(numCards int) Round {
-  // TODO: validate that round doesn't exist
-  currentRoundId = currentRoundId + 1;
+  newRoundId := len(rounds) + 1
 
   var newRound = Round{
-    Id: currentRoundId,
-    Sequence: currentRoundId,
+    Id: newRoundId,
     NumCards: numCards,
   }
 
@@ -85,7 +80,7 @@ func AddRound(numCards int) Round {
 
   for i:=0; i < len(players); i++ {
     playerRoundsStore[newRound.Id][players[i]] = PlayerRound{
-      Round: currentRoundId,
+      Round: newRoundId,
       Player: players[i],
     }
   }
@@ -93,7 +88,6 @@ func AddRound(numCards int) Round {
   return newRound
 }
 
-// TODO abstract out the finding function, use pointer for both of the following
 // How should I return a falied status? For now just returns a null PlayerRound
 func UpdateBid(roundId int, player string, bid int) PlayerRound {
   var updatedPlayerRound PlayerRound

@@ -9,7 +9,7 @@ const Round = (props) => {
         {round.numCards}
       </td>
       { round.playerRounds.map( playerRound =>
-        <PlayerRound key={playerRound.id} playerRound={playerRound} />
+        <PlayerRound key={"" + playerRound.round + playerRound.player} playerRound={playerRound} />
       )}
     </tr>
   );

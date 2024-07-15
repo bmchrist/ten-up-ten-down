@@ -5,7 +5,6 @@ import { useMutation, gql } from '@apollo/client';
 const UPDATE_TRICKS_MUTATION = gql`
   mutation updateTricks($roundId: Int!, $player: String!, $tricks: Int!) {
     updateTricks(roundId: $roundId, player: $player, tricks: $tricks){
-      id
       tricks
     }
   }
@@ -13,7 +12,6 @@ const UPDATE_TRICKS_MUTATION = gql`
 const UPDATE_BID_MUTATION = gql`
   mutation updateBid($roundId: Int!, $player: String!, $bid: Int!) {
     updateBid(roundId: $roundId, player: $player, bid: $bid){
-      id
       bid
     }
   }
