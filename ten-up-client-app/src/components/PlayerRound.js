@@ -20,7 +20,8 @@ const UPDATE_BID_MUTATION = gql`
 `
 
 const PlayerRound = (props) => {
-  let input;
+  let bidInput;
+  let tricksInput;
 
   const [updateBid] = useMutation(UPDATE_BID_MUTATION, {});
   const [updateTricks] = useMutation(UPDATE_TRICKS_MUTATION, {});
@@ -36,26 +37,26 @@ const PlayerRound = (props) => {
         <form onSubmit={e => {
             e.preventDefault();
             updateBid({ variables: {
-              bid: input.value,
+              bid: bidInput.value,
               player: playerRound.player,
               roundId: playerRound.round
             }})
         }}>
           <input
-            ref={node => { input = node}}
+            ref={node => { bidInput = node}}
           />
           <button type="submit">Bid</button>
         </form>
         <form onSubmit={e => {
             e.preventDefault();
             updateTricks({ variables: {
-              tricks: input.value,
+              tricks: tricksInput.value,
               player: playerRound.player,
               roundId: playerRound.round
             }})
         }}>
           <input
-            ref={node => { input = node}}
+            ref={node => { tricksInput = node}}
           />
           <button type="submit">Tricks</button>
         </form>
