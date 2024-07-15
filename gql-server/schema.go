@@ -99,6 +99,28 @@ func init() {
           ), nil
         },
       },
+      "updateTricks": &graphql.Field{
+        Type: playerRoundType,
+        Description: "Sets the tricks scored for a given player",
+        Args: graphql.FieldConfigArgument{
+          "roundId": &graphql.ArgumentConfig{
+            Type: graphql.Int,
+          },
+          "player": &graphql.ArgumentConfig{
+            Type: graphql.String,
+          },
+          "tricks": &graphql.ArgumentConfig{
+            Type: graphql.Int,
+          },
+        },
+        Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+          return UpdateTricks(
+            params.Args["roundId"].(int),
+            params.Args["player"].(string),
+            params.Args["tricks"].(int),
+          ), nil
+        },
+      },
     },
   })
 

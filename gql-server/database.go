@@ -114,12 +114,25 @@ func AddRound(numCards int) Round {
   return newRound
 }
 
+// TODO abstract out the finding function, use pointer for both of the following
 // How should I return a falied status? For now just returns a null PlayerRound
 func UpdateBid(roundId int, player string, bid int) PlayerRound {
   var updatedPlayerRound PlayerRound
   for i:=0; i < len(playerRounds); i++ { // add or playerRound not null to exit if found already
     if playerRounds[i].Round == roundId && playerRounds[i].Player == player {
       playerRounds[i].Bid = bid
+      updatedPlayerRound = playerRounds[i]
+    }
+  }
+  return updatedPlayerRound
+}
+
+// How should I return a falied status? For now just returns a null PlayerRound
+func UpdateTricks(roundId int, player string, tricks int) PlayerRound {
+  var updatedPlayerRound PlayerRound
+  for i:=0; i < len(playerRounds); i++ { // add or playerRound not null to exit if found already
+    if playerRounds[i].Round == roundId && playerRounds[i].Player == player {
+      playerRounds[i].Tricks = tricks
       updatedPlayerRound = playerRounds[i]
     }
   }
