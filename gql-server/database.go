@@ -1,10 +1,5 @@
 package main
 
-//import (
-  //"math/rand/v2"
-  //"fmt"
-//)
-
 type PlayerRound struct {
   Id      string  `json:"id"` // not really needed
   Round   int     `json:"integer"` // points to round ID
@@ -26,41 +21,24 @@ var playerRounds = []PlayerRound{}
 var currentRoundId int = 0;
 var players = []string{}
 
+//var roundsStore = []Round {
+//}
+//var playerRoundsStore = map[Round][]PlayerRound {
+//}
+
 func init() {
-  // For testing, add some seed data. Defined in database.go
   SeedRounds();
 }
 
 func SeedRounds() bool {
-  currentRoundId = 1;
+  AddPlayer("Ben")
+  AddPlayer("Scott")
 
-  players = []string{"Ben", "Scott"};
-
-  rounds = append(rounds,
-    Round{
-      Id: 1,
-      Sequence: 1,
-      NumCards: 10,
-    },
-  )
-
-  playerRounds = append(
-    playerRounds,
-    PlayerRound{
-      Id: "1",
-      Round: 1,
-      Player: "Ben",
-      Bid: 2,
-      Tricks: 1,
-    },
-    PlayerRound{
-      Id: "2",
-      Round: 1,
-      Player: "Scott",
-      Bid: 5,
-      Tricks: 0,
-    },
-  )
+  var round = AddRound(10)
+  UpdateBid(round.Id, "Ben", 1)
+  UpdateTricks(round.Id, "Ben", 0)
+  UpdateBid(round.Id, "Scott", 2)
+  UpdateTricks(round.Id, "Scott", 2)
 
   return true
 }
@@ -92,6 +70,13 @@ func GetAllRounds() []Round {
 // ---------
 // Mutations
 // ---------
+// Add player, returns list of all players
+// TODO expose this via gql
+func AddPlayer(name string) []string {
+  players = append(players, name)
+  return players
+}
+
 func AddRound(numCards int) Round {
   // TODO: validate that round doesn't exist
   currentRoundId = currentRoundId + 1;
