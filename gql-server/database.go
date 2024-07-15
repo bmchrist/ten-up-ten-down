@@ -17,14 +17,13 @@ type Round struct {
 
 // Consider storing the playerRounds under rounds in a map..
 var rounds = []Round{}
-var playerRounds = []PlayerRound{}
+
+// playerRoundsStore[roundId]["player"] = PlayerRound
+var playerRoundsStore = map[int]map[string]PlayerRound{}
+
 var currentRoundId int = 0;
 var players = []string{}
 
-//var roundsStore = []Round {
-//}
-//var playerRoundsStore = map[Round][]PlayerRound {
-//}
 
 func init() {
   SeedRounds();
@@ -47,20 +46,13 @@ func SeedRounds() bool {
 // Getters
 // -------
 
-// Likely not needed anymore (we get these via the Rounds which uses the GetPlayerRounds call)
-//func GetAllPlayerRounds() []PlayerRound {
-  //return playerRounds;
-//}
-
 // Gets all the player rounds for a given round ID (which is the same as its sequence)
 func GetPlayerRounds(round_id int) []PlayerRound {
-  var selectedRounds = []PlayerRound{}
-  for i:=0; i < len(playerRounds); i++ {
-    if playerRounds[i].Round == round_id {
-      selectedRounds = append(selectedRounds, playerRounds[i])
-    }
+  var playerRoundsToReturn []PlayerRound
+  for _, value := range playerRoundsStore[round_id] {
+    playerRoundsToReturn = append(playerRoundsToReturn, value)
   }
-  return selectedRounds;
+  return playerRoundsToReturn
 }
 
 func GetAllRounds() []Round {
@@ -89,11 +81,13 @@ func AddRound(numCards int) Round {
 
   rounds = append(rounds, newRound)
 
+  playerRoundsStore[newRound.Id] = map[string]PlayerRound{}
+
   for i:=0; i < len(players); i++ {
-    playerRounds = append(playerRounds, PlayerRound{
+    playerRoundsStore[newRound.Id][players[i]] = PlayerRound{
       Round: currentRoundId,
       Player: players[i],
-    })
+    }
   }
 
   return newRound
@@ -103,23 +97,21 @@ func AddRound(numCards int) Round {
 // How should I return a falied status? For now just returns a null PlayerRound
 func UpdateBid(roundId int, player string, bid int) PlayerRound {
   var updatedPlayerRound PlayerRound
-  for i:=0; i < len(playerRounds); i++ { // add or playerRound not null to exit if found already
-    if playerRounds[i].Round == roundId && playerRounds[i].Player == player {
-      playerRounds[i].Bid = bid
-      updatedPlayerRound = playerRounds[i]
-    }
-  }
+
+  updatedPlayerRound = playerRoundsStore[roundId][player]
+  updatedPlayerRound.Bid = bid
+  playerRoundsStore[roundId][player] = updatedPlayerRound
+
   return updatedPlayerRound
 }
 
 // How should I return a falied status? For now just returns a null PlayerRound
 func UpdateTricks(roundId int, player string, tricks int) PlayerRound {
   var updatedPlayerRound PlayerRound
-  for i:=0; i < len(playerRounds); i++ { // add or playerRound not null to exit if found already
-    if playerRounds[i].Round == roundId && playerRounds[i].Player == player {
-      playerRounds[i].Tricks = tricks
-      updatedPlayerRound = playerRounds[i]
-    }
-  }
+
+  updatedPlayerRound = playerRoundsStore[roundId][player]
+  updatedPlayerRound.Tricks = tricks
+  playerRoundsStore[roundId][player] = updatedPlayerRound
+
   return updatedPlayerRound
 }

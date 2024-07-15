@@ -8,7 +8,7 @@ import (
 func TestGetPlayerRounds(t *testing.T) {
   // Properly gets both player's round for Round 1
   var foundPlayerRounds = GetPlayerRounds(1)
-  if len(playerRounds) != 2 {
+  if len(foundPlayerRounds) != 2 {
     t.Fatalf(`Player rounds expected 2, found %d`, len(foundPlayerRounds))
   }
 
@@ -36,8 +36,26 @@ func TestAddRound(t *testing.T){
   // TODO Check the rounds list to see if the round exists with the values expected
 }
 
-func TestUpdateBid(t *testing.T){
+func TestAddPlayers(t *testing.T) {
   // TODO
+}
+
+func TestUpdateBid(t *testing.T){
+  UpdateBid(1, "Ben", 5)
+
+  var playerRounds = GetPlayerRounds(1)
+
+  var foundRound = PlayerRound{}
+
+  for i:=0; i<len(playerRounds); i++ {
+    if playerRounds[i].Player == "Ben" {
+      foundRound = playerRounds[i]
+    }
+  }
+
+  if foundRound.Player == "" || foundRound.Bid != 5 {
+    t.Fatalf(`Expected bid to be updated but found player %s, bid: %d`, foundRound.Player, foundRound.Bid)
+  }
 }
 
 func TestUpdateTricks(t *testing.T){
