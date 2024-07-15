@@ -8,6 +8,7 @@ const ROUNDS_QUERY = gql`
       id
       numCards
       playerRounds {
+        id
         player
         round
         bid

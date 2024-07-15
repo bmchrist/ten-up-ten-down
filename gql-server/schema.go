@@ -2,6 +2,7 @@ package main // tutorial has this as data which I think is a mistake
 
 import (
   "github.com/graphql-go/graphql"
+  "fmt"
 )
 
 var playerRoundType *graphql.Object
@@ -14,6 +15,17 @@ func init() {
   playerRoundType = graphql.NewObject(graphql.ObjectConfig{
     Name: "PlayerRound",
     Fields: graphql.Fields{
+      "id": &graphql.Field{
+        Type: graphql.String,
+
+			  // We want a unique ID for react to understand when it was updated
+        Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+          if playerRound, ok := p.Source.(PlayerRound); ok {
+						return fmt.Sprintf("%s-%d", playerRound.Player, playerRound.Round), nil
+					}
+					return nil, nil
+        },
+      },
       "player": &graphql.Field{ Type: graphql.String }, // should be !
       "round": &graphql.Field{ Type: graphql.Int }, // should be !
       "bid": &graphql.Field{ Type: graphql.Int },
